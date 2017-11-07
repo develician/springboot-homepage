@@ -1,6 +1,6 @@
 create database homepage;
 
-create table article(
+create table article (
   id int not null auto_increment,
   createdAt datetime not null default now(),
   title varchar(100) not null,
@@ -11,7 +11,7 @@ create table article(
 );
 
 
-create table member(
+create table member (
   userID varchar(100) not null,
   userPassword varchar(100) not null,
   userBirth varchar(100) not null,
