@@ -25,8 +25,8 @@ public class HomePageController {
 
     private final String basePath = "/tmp/upload/";
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(Model model, HttpServletRequest request) {
+    @RequestMapping("/index")
+    public String index(Model model) {
         model.addAttribute("list", gallery.getList());
 //        String pageNum = request.getQueryString();
 //        model.addAttribute("pageNum", pageNum);
