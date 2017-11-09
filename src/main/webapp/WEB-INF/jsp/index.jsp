@@ -3,6 +3,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:useBean id="article" class="homepage.HomePageDAO" scope="session"/>
 <!DOCTYPE HTML>
 <!--
 Massively by HTML5 UP
@@ -89,7 +90,8 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
                     <h2><a href="/gallery.action?articleNum=<%=list.get(j-1).getId()%>"><%=list.get(j - 1).getTitle()%>
                     </a></h2>
                 </header>
-                <a href="/gallery.action?articleNum=<%=list.get(j-1).getId()%>" class="image fit"><img src="/image.action?<%=list.get(j - 1).getSaveName()%>" alt=""/></a>
+                <a href="/gallery.action?articleNum=<%=list.get(j-1).getId()%>" class="image fit"><img
+                        src="/image.action?<%=list.get(j - 1).getSaveName()%>" alt=""/></a>
                 <p><%=list.get(j - 1).getContent()%>
                 </p>
                 <ul class="actions">
@@ -110,7 +112,8 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
                     <h2><a href="/gallery.action?articleNum=<%=list.get(k-1).getId()%>"><%=list.get(k - 1).getTitle()%>
                     </a></h2>
                 </header>
-                <a href="/gallery.action?articleNum=<%=list.get(k-1).getId()%>" class="image fit"><img src="/image.action?<%=list.get(k - 1).getSaveName()%>" alt=""/></a>
+                <a href="/gallery.action?articleNum=<%=list.get(k-1).getId()%>" class="image fit"><img
+                        src="/image.action?<%=list.get(k - 1).getSaveName()%>" alt=""/></a>
                 <p><%=list.get(k - 1).getContent()%>
                 </p>
                 <ul class="actions">
@@ -132,141 +135,79 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 
         <!-- Footer -->
         <footer>
+            <%--<span class="extra">&hellip;</span>--%>
             <div class="pagination">
-                <!--<a href="#" class="previous">Prev</a>-->
+                <%--<a href="#" class="previous">Prev</a>--%>
                 <%
-                    int lastPage;
-                    if (list.size() % 4 == 0) {
-                        lastPage = list.size() / 4;
-                    } else {
-                        lastPage = list.size() / 4 + 1;
+                    int totalCount = list.size();
+                    int countList = 4;
+                    int countPage = 10;
+                    int totalPage = totalCount / countList;
+                    if (totalCount % countList > 0) {
+                        totalPage++;
+                    }
+                    if (totalPage < pages) {
+                        pages = totalPage;
+                    }
+                    int startPage = ((pages - 1) / countPage) * countPage + 1;
+                    int endPage = startPage + countPage - 1;
+
+                    if (endPage > totalPage) {
+
+                        endPage = totalPage;
+
+                    }
+                    if (startPage > 1) {
+
+                        out.print("<a href=\"?1\" class=\"page\">Start</a>");
+
                     }
 
-                    if (pages == 1) {
-                %>
+                    if (pages > 1) {
 
-                <a href="/index.action?1" class="page active">1
-                </a>
-                <a href="/index.action?2" class="page">2
-                </a>
-                <a href="/index.action?3" class="page">3
-                </a>
-                <span class="extra">&hellip;</span>
-                <a href="/index.action?<%=list.size() / 4 - 2%>" class="page"><%=list.size() / 4 - 2%>
-                </a>
-                <a href="/index.action?<%=list.size() / 4 - 1%>" class="page"><%=list.size() / 4 - 1%>
-                </a>
-                <a href="/index.action?<%=list.size() / 4%>" class="page"><%=list.size() / 4%>
-                </a>
-                <%
+                        out.print("<a href=\"?" + (pages - 1)  + "\" class=\"previous\">Prev</a>");
 
-
-                } else if (list.size() / 4 + 1 > 10 && !(pages <= lastPage - 2 || pages == lastPage - 1 || pages == lastPage || pages > lastPage || pages != 1) || pages <= lastPage / 2) {
-                %>
-
-
-                <a href="/index.action?<%=pages-1%>" class="page"><%=pages - 1%>
-                </a>
-                <a href="/index.action?<%=pages%>" class="page active"><%=pages%>
-                </a>
-                <a href="/index.action?<%=pages+1%>" class="page"><%=pages + 1%>
-                </a>
-                <span class="extra">&hellip;</span>
-                <a href="/index.action?<%=lastPage- 2 %>" class="page"><%=lastPage - 2%>
-                </a>
-                <a href="/index.action?<%=lastPage - 1%>" class="page"><%=lastPage - 1%>
-                </a>
-                <a href="/index.action?<%=lastPage%>" class="page"><%=lastPage%>
-                </a>
-
-
-                <%
                     }
-                    if (pages == lastPage - 1 || pages == lastPage) {
 
-                %>
+                    for (int iCount = startPage; iCount <= endPage; iCount++) {
 
-                <%
-                    if (pages == lastPage) {
-                %>
-                <a href="/index.action?1" class="page">1
-                </a>
-                <a href="/index.action?2" class="page">2
-                </a>
-                <a href="/index.action?3" class="page">3
-                </a>
-                <span class="extra">&hellip;</span>
-                <a href="/index.action?<%=lastPage - 2%>" class="page"><%=lastPage - 2%>
-                </a>
-                <a href="/index.action?<%=lastPage - 1%>" class="page"><%=lastPage - 1%>
-                </a>
-                <a href="/index.action?<%=lastPage%>" class="page active"><%=lastPage%>
-                </a>
+                        if (iCount == pages) {
 
-                <%
-                    }
-                    if (pages == lastPage - 1) {
-                %>
-                <a href="/index.action?1" class="page">1
-                </a>
-                <a href="/index.action?2" class="page">2
-                </a>
-                <a href="/index.action?3" class="page">3
-                </a>
-                <span class="extra">&hellip;</span>
-                <a href="/index.action?<%=lastPage - 2%>" class="page"><%=lastPage - 2%>
-                </a>
-                <a href="/index.action?<%=lastPage - 1%>" class="page active"><%=lastPage - 1%>
-                </a>
-                <a href="/index.action?<%=lastPage%>" class="page"><%=lastPage%>
-                </a>
-                <%
+                            out.print(" <a href=\"?" + iCount + "\" class=\"page active\"> " + iCount + "</a>");
+
+                        } else {
+
+                            out.print(" <a href=\"?" + iCount + "\" class=\"page\"> " + iCount + "</a>");
+
                         }
+
                     }
-                    if (pages > lastPage || pages < 1) { %>
-                <script>
-                    location.href = "/error.action";
-                </script>
-                <%
+
+
+                    if (pages < totalPage) {
+
+                        out.print("<a href=\"?" + (pages + 1)  + "\" class=\"next\">Next</a>");
+
                     }
-//                else{
-//                    for (int i = 0; i < list.size(); i = i + 4) {
-                    if (pages <= lastPage - 2 && pages > lastPage / 2) {
+
+
+
+                    if (endPage < totalPage) {
+
+                        out.print("<a href=\"?" + totalPage + "\">End</a>");
+
+                    }
+
+
+
+//                    for (int pNum = startPage; pNum <= endPage; pNum++) {
                 %>
-                <a href="/index.action?1" class="page">1
-                </a>
-                <a href="/index.action?2" class="page">2
-                </a>
-                <a href="/index.action?3" class="page">3
-                </a>
-                <span class="extra">&hellip;</span>
-                <a href="/index.action?<%=pages - 1%>" class="page"><%=pages - 1%>
-                </a>
-                <a href="/index.action?<%=pages%>" class="page active"><%=pages%>
-                </a>
-                <a href="/index.action?<%=pages + 1%>" class="page"><%=pages + 1%>
-                </a>
-
-
-                <%--<a href="/index.action?<%=i / 4 + 1%>" class="page active"><%=i / 4 + 1%>--%>
-                <%--</a>--%>
-                <%
-                    }
-
-                    //                        }
+                <%--<a href="/index.action?<%=pNum%>" class="page active"><%=pNum%>--%>
+                        <%
 //                    }
-
                 %>
+                   <%--<a href="#" class="next">Next</a>--%>
 
-
-                <%--<a href="#" class="page active">1</a>--%>
-                <%--<a href="#" class="page">2</a>--%>
-                <%--<a href="#" class="page">3</a>--%>
-                <%--<span class="extra">&hellip;</span>--%>
-                <%--<a href="#" class="page">8</a>--%>
-                <%--<a href="#" class="page">9</a>--%>
-                <%--<a href="#" class="page">10</a>--%>
-                <%--<a href="#" class="next">Next</a>--%>
             </div>
         </footer>
 

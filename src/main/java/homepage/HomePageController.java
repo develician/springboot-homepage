@@ -28,6 +28,7 @@ public class HomePageController {
     @RequestMapping("/index")
     public String index(Model model) {
         model.addAttribute("list", gallery.getList());
+
 //        String pageNum = request.getQueryString();
 //        model.addAttribute("pageNum", pageNum);
 

@@ -35,6 +35,14 @@ public class HomePageDAO {
 
     }
 
+    public boolean nextPage(int articleID){
+        String SQL = "SELECT * FROM article where id < ? order by id desc";
+        if(jdbcTemplate.query(SQL, new Object[]{articleID}, new ArticleMapper()).size() > 0){
+            return true;
+        }
+        return false;
+    }
+
     public static final class ArticleMapper implements RowMapper<Article> {
 
 
